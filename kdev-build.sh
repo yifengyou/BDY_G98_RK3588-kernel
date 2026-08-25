@@ -61,8 +61,13 @@ make ARCH=arm64 \
 
 
 # update rootfs modules
+rm -rf rootfs/var/cache/apk/*
 rm -rf rootfs/lib/modules/*
+rm -f  rootfs/root/.ash_history
 cp -a kos/lib/modules/* rootfs/lib/modules/
+du -sh rootfs
+
+# rebuild kernel archive rootfs
 make ARCH=arm64 \
   CROSS_COMPILE=aarch64-linux-gnu- \
   KBUILD_BUILD_USER="builder" \
@@ -84,7 +89,7 @@ ls -alh recovery/kernel.lzma
 cp -a arch/arm64/boot/dts/rockchip/rk3588-bdy-g98.dtb recovery/
 cd recovery
 
-dd if=/dev/zero of=recovery.img bs=1M count=26
+dd if=/dev/zero of=recovery.img bs=1M count=28
 mkimage -A arm64 -O linux -T kernel -C lzma \
     -a 0x40080000 -e 0x40080000 \
     -n "Recovery Kernel" \
