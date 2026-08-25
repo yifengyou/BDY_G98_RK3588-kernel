@@ -184,3 +184,10 @@ sphinx_*/
 
 # Rust analyzer configuration
 /rust-project.json
+/deprecated
+/kernel-headers/
+/kos/
+/recovery.img
+/extlinux
+/recovery
+/rootfs
