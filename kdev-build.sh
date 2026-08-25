@@ -17,9 +17,6 @@ make ARCH=arm64 \
   LOCALVERSION=-kdev \
   bdy_g98_rk3588_defconfig
 
-
-cat .config
-
 # check kver
 KVER=$(make LOCALVERSION=-kdev kernelrelease)
 KVER="${KVER/kdev*/kdev}"
@@ -61,6 +58,18 @@ make ARCH=arm64 \
   LOCALVERSION=-kdev \
   INSTALL_MOD_PATH=$(pwd)/kos \
   modules_install
+
+
+# update rootfs modules
+rm -rf rootfs/lib/modules/*
+cp -a kos/lib/modules/* rootfs/lib/modules/
+make ARCH=arm64 \
+  CROSS_COMPILE=aarch64-linux-gnu- \
+  KBUILD_BUILD_USER="builder" \
+  KBUILD_BUILD_HOST="kdevbuilder" \
+  LOCALVERSION=-kdev \
+  KCFLAGS="-Wno-unused-function" \
+   -j$(nproc)
 
 cat include/config/kernel.release
 ls -alh arch/arm64/boot/Image
