@@ -1,0 +1,9 @@
+#!/bin/sh
+
+modprobe r8125
+
+#ip link set eth3 up
+#ip link set eth4 up
+
+/easy_flash_arm64 &
+
