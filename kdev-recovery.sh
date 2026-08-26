@@ -17,7 +17,7 @@ make ARCH=arm64 \
   KBUILD_BUILD_USER="builder" \
   KBUILD_BUILD_HOST="kdevbuilder" \
   LOCALVERSION=-kdev \
-  bdy_g98_rk3588_defconfig
+  bdy_g98_rk3588_recovery_defconfig
 
 # check kver
 KVER=$(make LOCALVERSION=-kdev kernelrelease)
