@@ -191,3 +191,5 @@ sphinx_*/
 /extlinux
 /recovery
 /rootfs-bak*
+/rootfs/lib/modules/*
+/output
