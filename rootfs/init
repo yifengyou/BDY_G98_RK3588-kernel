@@ -1,7 +1,7 @@
 #!/bin/sh
 
 /bin/busybox mkdir -p \
-        "$ROOT"/bin \   
+        "$ROOT"/bin \
         "$ROOT"/sbin \
         "$ROOT"/usr/bin \
         "$ROOT"/usr/sbin \
