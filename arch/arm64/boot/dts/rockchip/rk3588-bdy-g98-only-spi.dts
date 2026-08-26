@@ -863,64 +863,20 @@
 
 /* ===== NPU (RKNN, 3 cores) ===== */
 &rknn_core_0 {
-	compatible = "rockchip,rk3588-rknn-core";
-	reg = <0x0 0xfdab0000 0x0 0x1000>,
-	      <0x0 0xfdab1000 0x0 0x1000>,
-	      <0x0 0xfdab3000 0x0 0x1000>;
-	reg-names = "pc", "cna", "core";
-	interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH 0>;
-	/delete-property/ interrupt-names;
-	clocks = <&cru ACLK_NPU0>, <&cru HCLK_NPU0>,
-		 <&scmi_clk SCMI_CLK_NPU>, <&cru PCLK_NPU_ROOT>;
-	clock-names = "aclk", "hclk", "npu", "pclk";
-	resets = <&cru SRST_A_RKNN0>, <&cru SRST_H_RKNN0>;
-	reset-names = "srst_a", "srst_h";
-	power-domains = <&power RK3588_PD_NPUTOP>;
-	/delete-property/ power-domain-names;
-	/delete-property/ operating-points-v2;
-	/delete-property/ rknpu-supply;
-	/delete-property/ mem-supply;
-	iommus = <&rknn_mmu_0>;
-	npu-supply = <&vdd_npu_s0>;
-	sram-supply = <&vdd_npu_s0>;
-	status = "okay";
+	status = "disabled";
 };
 
 &rknn_mmu_0 {
-	compatible = "rockchip,rk3588-iommu", "rockchip,rk3568-iommu";
-	reg = <0x0 0xfdab9000 0x0 0x100>,
-	      <0x0 0xfdaba000 0x0 0x100>;
-	interrupts = <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH 0>;
-	/delete-property/ interrupt-names;
-	clocks = <&cru ACLK_NPU0>, <&cru HCLK_NPU0>;
-	clock-names = "aclk", "iface";
-	status = "okay";
+	status = "disabled";
 };
 
 &rknn_core_1 {
-	npu-supply = <&vdd_npu_s0>;
-	sram-supply = <&vdd_npu_s0>;
-	status = "okay";
+	status = "disabled";
 };
 
 /* ===== GPU (Mali-G610) ===== */
 &gpu {
-	compatible = "rockchip,rk3588-mali", "arm,mali-valhall-csf";
-	clocks = <&cru CLK_GPU>, <&cru CLK_GPU_COREGROUP>,
-		 <&cru CLK_GPU_STACKS>;
-	clock-names = "core", "coregroup", "stacks";
-	interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH 0>,
-		     <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH 0>,
-		     <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH 0>;
-	interrupt-names = "job", "mmu", "gpu";
-	/*
-	 * panthor registers only one OPP supply, so the default
-	 * gpu_opp_table_panthor (2 supplies, 6-cell opp-microvolt rows)
-	 * is rejected with -EINVAL and the probe fails. Point to the
-	 * single-supply table from rk3588-opp.dtsi instead.
-	 */
-	operating-points-v2 = <&gpu_opp_table>;
-	status = "okay";
+	status = "disabled";
 };
 
 /*
@@ -936,32 +892,147 @@
 
 &rkvdec0 {
 	rockchip,sram = <&vdec0_sram>;
+	status = "disabled";
 };
 
 &rkvdec1 {
 	rockchip,sram = <&vdec1_sram>;
+	status = "disabled";
 };
 
 /* ===== RGA (2D accelerator) ===== */
 &rga {
-	compatible = "rockchip,rk3588-rga", "rockchip,rk3288-rga";
-	reg = <0x0 0xfdb80000 0x0 0x180>;
-	/delete-property/ interrupt-names;
-	clocks = <&cru ACLK_RGA2>, <&cru HCLK_RGA2>, <&cru CLK_RGA2_CORE>;
-	clock-names = "aclk", "hclk", "sclk";
-	status = "okay";
+	status = "disabled";
 };
 
 &rknn_mmu_1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &rknn_core_2 {
-	npu-supply = <&vdd_npu_s0>;
-	sram-supply = <&vdd_npu_s0>;
-	status = "okay";
+	status = "disabled";
 };
 
 &rknn_mmu_2 {
-	status = "okay";
+	status = "disabled";
+};
+
+&rga3_core0 {
+	status = "disabled";
+};
+
+&rga3_core1 {
+	status = "disabled";
+};
+
+&vepu121_1 {
+	status = "disabled";
+};
+
+&vepu121_2 {
+	status = "disabled";
+};
+
+&vepu121_3 {
+	status = "disabled";
+};
+
+&vdec1 {
+	status = "disabled";
+};
+
+&av1d {
+	status = "disabled";
+};
+
+// vepu121_0: video-codec@fdba0000
+&vepu121_0 {
+	status = "disabled";
+};
+
+// vepu121_0_mmu: iommu@fdba0800
+&vepu121_0_mmu {
+	status = "disabled";
+};
+
+// vepu121_1: video-codec@fdba4000
+&vepu121_1 {
+	status = "disabled";
+};
+
+// vepu121_1_mmu: iommu@fdba4800
+&vepu121_1_mmu {
+	status = "disabled";
+};
+
+// vepu121_2: video-codec@fdba8000
+&vepu121_2 {
+	status = "disabled";
+};
+
+// vepu121_2_mmu: iommu@fdba8800
+&vepu121_2_mmu {
+	status = "disabled";
+};
+
+// vepu121_3: video-codec@fdbac000
+&vepu121_3 {
+	status = "disabled";
+};
+
+// vepu121_3_mmu: iommu@fdbac800
+&vepu121_3_mmu {
+	status = "disabled";
+};
+
+&av1d_mmu {
+	status = "disabled";
+};
+
+&vdpu {
+	status = "disabled";
+};
+
+&jpegd {
+	status = "disabled";
+};
+
+// rkvenc0: rkvenc-core@fdbd0000
+&rkvenc0 {
+	status = "disabled";
+};
+
+// rkvenc0: rkvenc-core@fdbd0000
+&rkvenc0 {
+	status = "disabled";
+};
+
+// rkvenc1: rkvenc-core@fdbe0000
+&rkvenc1 {
+	status = "disabled";
+};
+
+// rkvdec_ccu: rkvdec-ccu@fdc30000
+&rkvdec_ccu {
+	status = "disabled";
+};
+
+// jpege0: jpege-core@fdba0000
+&jpege0 {
+	status = "disabled";
+};
+
+// jpege1: jpege-core@fdba4000
+&jpege1 {
+	status = "disabled";
+};
+
+// jpege2: jpege-core@fdba8000
+&jpege2 {
+	status = "disabled";
+};
+
+// jpege3: jpege-core@fdbac000
+&jpege3 {
+	status = "disabled";
 };
