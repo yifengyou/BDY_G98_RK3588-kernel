@@ -22,3 +22,8 @@ for script in /etc/profile.d/*.sh ; do
 	fi
 done
 unset script
+
+# PS1
+PS1='\[\e[32;1m\][\[\e[31;1m\]\u\[\e[33;1m\]@\[\e[35;1m\]\h\[\e[36;1m\] \w\[\e[32;1m\]]\[\e[37;1m\]\$\[\e[0m\] '
+
+
