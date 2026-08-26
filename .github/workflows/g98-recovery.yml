@@ -73,7 +73,7 @@ jobs:
           pwd
           sudo /bin/cp -a ${{ github.workspace }}/* .
           ls -alh
-          ./kdev-recovery.sh
+          sudo ./kdev-recovery.sh
 
           sudo mkdir -p /builder/release
           sudo cp output/* /builder/release
