@@ -11,6 +11,7 @@ dropbear
 ethtool
 gcompat
 htop
+iptables
 lvm2
 musl-utils
 openrc

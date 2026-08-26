@@ -1,3 +1,4 @@
+kernel/arch/arm64/kvm/kvm.ko
 kernel/arch/arm64/crypto/sha3-ce.ko
 kernel/arch/arm64/crypto/sm3-neon.ko
 kernel/arch/arm64/crypto/sm3-ce.ko
@@ -956,3 +957,4 @@ kernel/net/sunrpc/auth_gss/rpcsec_gss_krb5.ko
 kernel/net/rfkill/rfkill.ko
 kernel/net/xdp/xsk_diag.ko
 kernel/net/mptcp/mptcp_diag.ko
+kernel/virt/lib/irqbypass.ko
