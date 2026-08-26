@@ -12,7 +12,7 @@ env:
   ACTIONS_STEP_DEBUG: true
 
 jobs:
-  build-uboot:
+  build-recovery:
     runs-on: ubuntu-22.04
 
     steps:
@@ -67,7 +67,7 @@ jobs:
             sudo locales lsb-release ca-certificates gnupg dirmngr
           df -Th
 
-      - name: Run UBoot Build in Ubuntu 22.04 container
+      - name: Run Recovery Build in Ubuntu 22.04 container
         working-directory: /builder
         run: |
           pwd
@@ -83,7 +83,7 @@ jobs:
           ls -alh  /builder/release/*
           md5sum /builder/release/*
 
-      - name: Upload UBOOT to Release
+      - name: Upload Recovery to Release
         uses: ncipollo/release-action@main
         with:
           tag: bdy-g98-recovery
