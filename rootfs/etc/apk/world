@@ -15,5 +15,7 @@ lvm2
 musl-utils
 openrc
 openssh-server
+openvswitch
+openvswitch-openrc
 pciutils
 util-linux
