@@ -350,6 +350,7 @@
 
 		ethernet@0,0 {
 			reg = <0x00210000 0 0 0 0>;
+			local-mac-address = [32 6e 87 ee bd 00];
 			r8125,led0 = <0x22b>;
 			r8125,led1 = <0x22b>;
 			r8125,led2 = <0x22b>;
@@ -378,6 +379,7 @@
 
 		ethernet@0,0 {
 			reg = <0x00310000 0 0 0 0>;
+			local-mac-address = [32 6e 87 ee bd 01];
 			r8125,led0 = <0x22b>;
 			r8125,led1 = <0x22b>;
 			r8125,led2 = <0x22b>;
@@ -757,6 +759,7 @@
 				label = "lan5";
 				phy-mode = "internal";
 				phy-handle = <&sw1phy1>;
+				mac-address = [32 6e 87 ee bc e0];
 			};
 
 			ethernet-port@2 {
@@ -764,6 +767,7 @@
 				label = "lan6";
 				phy-mode = "internal";
 				phy-handle = <&sw1phy2>;
+				mac-address = [32 6e 87 ee bc e1];
 			};
 
 			ethernet-port@3 {
@@ -771,6 +775,7 @@
 				label = "lan7";
 				phy-mode = "internal";
 				phy-handle = <&sw1phy3>;
+				mac-address = [32 6e 87 ee bc e2];
 			};
 
 			ethernet-port@4 {
@@ -778,6 +783,7 @@
 				label = "lan8";
 				phy-mode = "internal";
 				phy-handle = <&sw1phy4>;
+				mac-address = [32 6e 87 ee bc e3];
 			};
 
 			ethernet-port@9 {
@@ -823,6 +829,7 @@
 				label = "lan1";
 				phy-mode = "internal";
 				phy-handle = <&sw0phy1>;
+				mac-address = [2e 6e 87 ee bc e0];
 			};
 
 			ethernet-port@2 {
@@ -830,6 +837,7 @@
 				label = "lan2";
 				phy-mode = "internal";
 				phy-handle = <&sw0phy2>;
+				mac-address = [2e 6e 87 ee bc e1];
 			};
 
 			ethernet-port@3 {
@@ -837,6 +845,7 @@
 				label = "lan3";
 				phy-mode = "internal";
 				phy-handle = <&sw0phy3>;
+				mac-address = [2e 6e 87 ee bc e2];
 			};
 
 			ethernet-port@4 {
@@ -844,6 +853,7 @@
 				label = "lan4";
 				phy-mode = "internal";
 				phy-handle = <&sw0phy4>;
+				mac-address = [2e 6e 87 ee bc e3];
 			};
 
 			ethernet-port@9 {
