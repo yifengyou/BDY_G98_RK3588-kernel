@@ -1,4 +1,3 @@
-kernel/arch/arm64/kvm/kvm.ko
 kernel/arch/arm64/crypto/sha3-ce.ko
 kernel/arch/arm64/crypto/sm3-neon.ko
 kernel/arch/arm64/crypto/sm3-ce.ko
@@ -586,12 +585,14 @@ kernel/drivers/input/input-core.ko
 kernel/drivers/input/ff-memless.ko
 kernel/drivers/input/input-leds.ko
 kernel/drivers/input/evdev.ko
+kernel/drivers/input/keyboard/adc-keys.ko
 kernel/drivers/input/keyboard/gpio_keys.ko
 kernel/drivers/input/keyboard/gpio_keys_polled.ko
 kernel/drivers/input/touchscreen/sun4i-ts.ko
 kernel/drivers/input/misc/axp20x-pek.ko
 kernel/drivers/input/misc/rk805-pwrkey.ko
 kernel/drivers/input/misc/uinput.ko
+kernel/drivers/input/misc/adc_key_action.ko
 kernel/drivers/input/rmi4/rmi_core.ko
 kernel/drivers/input/rmi4/rmi_i2c.ko
 kernel/drivers/input/rmi4/rmi_spi.ko
@@ -913,8 +914,19 @@ kernel/net/netlink/netlink_diag.ko
 kernel/net/netfilter/nfnetlink.ko
 kernel/net/netfilter/nfnetlink_acct.ko
 kernel/net/netfilter/nf_conntrack.ko
+kernel/net/netfilter/nf_nat.ko
+kernel/net/netfilter/nf_tables.ko
+kernel/net/netfilter/nft_compat.ko
+kernel/net/netfilter/nft_ct.ko
+kernel/net/netfilter/nft_nat.ko
+kernel/net/netfilter/nft_masq.ko
+kernel/net/netfilter/nft_redir.ko
+kernel/net/netfilter/nft_chain_nat.ko
 kernel/net/netfilter/x_tables.ko
 kernel/net/netfilter/xt_tcpudp.ko
+kernel/net/netfilter/xt_nat.ko
+kernel/net/netfilter/xt_REDIRECT.ko
+kernel/net/netfilter/xt_MASQUERADE.ko
 kernel/net/ipv4/ip_tunnel.ko
 kernel/net/ipv4/fou.ko
 kernel/net/ipv4/udp_tunnel.ko
@@ -925,6 +937,9 @@ kernel/net/ipv4/xfrm4_tunnel.ko
 kernel/net/ipv4/tunnel4.ko
 kernel/net/ipv4/netfilter/nf_defrag_ipv4.ko
 kernel/net/ipv4/netfilter/ip_tables.ko
+kernel/net/ipv4/netfilter/iptable_filter.ko
+kernel/net/ipv4/netfilter/iptable_mangle.ko
+kernel/net/ipv4/netfilter/iptable_nat.ko
 kernel/net/ipv4/inet_diag.ko
 kernel/net/ipv4/tcp_diag.ko
 kernel/net/ipv4/udp_diag.ko
@@ -949,6 +964,7 @@ kernel/net/packet/af_packet.ko
 kernel/net/packet/af_packet_diag.ko
 kernel/net/key/af_key.ko
 kernel/net/bridge/bridge.ko
+kernel/net/bridge/br_netfilter.ko
 kernel/net/dsa/dsa_core.ko
 kernel/net/dsa/tag_yt921x.ko
 kernel/net/sunrpc/sunrpc.ko
@@ -957,4 +973,3 @@ kernel/net/sunrpc/auth_gss/rpcsec_gss_krb5.ko
 kernel/net/rfkill/rfkill.ko
 kernel/net/xdp/xsk_diag.ko
 kernel/net/mptcp/mptcp_diag.ko
-kernel/virt/lib/irqbypass.ko

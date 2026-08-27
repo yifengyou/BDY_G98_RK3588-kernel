@@ -992,4 +992,18 @@ config INPUT_STPMIC1_ONKEY
 	  To compile this driver as a module, choose M here: the
 	  module will be called stpmic1_onkey.
 
+config INPUT_ADC_KEY_ACTION
+	tristate "ADC key short/long press reboot/poweroff handler"
+	depends on INPUT
+	default y
+	help
+	  Registers an input handler that monitors a specific key event.
+	  Short press (< 3s) triggers system reboot.
+	  Long press (>= 3s) triggers system poweroff.
+
+	  Designed for ADC-based recovery/reset buttons on embedded boards.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called adc_key_action.
 endif
+
