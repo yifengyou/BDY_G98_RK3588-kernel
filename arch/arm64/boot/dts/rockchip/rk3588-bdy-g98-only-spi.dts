@@ -52,8 +52,8 @@
 		status = "okay";
 
 		recovery-key {
-			label = "F12";
-			linux,code = <0x58>;
+			label = "Restart";
+			linux,code = <KEY_RESTART>;
 			press-threshold-microvolt = <0x6d6>;
 		};
 	};
