@@ -4,6 +4,9 @@ set -ex
 
 WORKDIR=$(pwd)
 
+LOG_FILE="recovery-buildlog.txt"
+exec > >(tee -a "$LOG_FILE") 2>&1
+
 # update rkdev
 cd ${WORKDIR}/rkdev
 ./build.sh
@@ -138,6 +141,7 @@ sync
 umount /mnt
 sync
 cp -a recovery.img ${WORKDIR}/output/BDY_G98_RECOVERY_ONLY_SPI.img
+cp -a ${WORKDIR}/${LOG_FILE} ${WORKDIR}/output/
 
 ls -alh ${WORKDIR}/output/*.img
 sha256sum ${WORKDIR}/output/*.img
