@@ -1,10 +1,13 @@
-Welcome to Alpine!
 
-The Alpine Wiki contains a large amount of how-to guides and general
-information about administrating Alpine systems.
-See <https://wiki.alpinelinux.org/>.
-
-You can setup the system with the command: setup-alpine
-
-You may change this message by editing /etc/motd.
+***************************************************************
+*                    Welcome to RKdev System                  *
+*                                                             *
+*  OS: Alpine Linux (RK3588)                                  *
+*  Kernel: 6.18.y
+*  IP: http://IP/ (replace with actual)                       *
+*                                                             *
+*  Documentation: https://github.com/yifengyou/BDY_G98_RK3588 *
+*                                                             *
+*  Authorized access only. All activities are monitored.      *
+***************************************************************
 
