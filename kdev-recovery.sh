@@ -72,6 +72,7 @@ make ARCH=arm64 \
 rm -rf rootfs/var/cache/apk/*
 rm -rf rootfs/lib/modules/*
 rm -f rootfs/root/.ash_history
+echo > rootfs/var/log/apk.log
 cp -a kos/lib/modules/* rootfs/lib/modules/
 du -sh rootfs
 
