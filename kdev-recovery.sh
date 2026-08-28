@@ -141,5 +141,7 @@ cp -a recovery.img ${WORKDIR}/output/BDY_G98_RECOVERY_ONLY_SPI.img
 
 ls -alh ${WORKDIR}/output/*.img
 sha256sum ${WORKDIR}/output/*.img
+ls -alh ${WORKDIR}/recovery/kernel.lzma
+sha256sum ${WORKDIR}/recovery/kernel.lzma
 
 echo "All done!All ok!"
