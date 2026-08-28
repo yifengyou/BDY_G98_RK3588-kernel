@@ -193,3 +193,4 @@ sphinx_*/
 /rootfs-bak*
 /rootfs/lib/modules/*
 /output
+/rootfs/rkdev_arm64

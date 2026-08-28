@@ -4,6 +4,14 @@ set -ex
 
 WORKDIR=$(pwd)
 
+# update rkdev
+cd ${WORKDIR}/rkdev
+./build.sh
+cp -a rkdev_arm64 ${WORKDIR}/rootfs/
+sync
+
+# build kernel
+cd ${WORKDIR}/
 #make ARCH=arm64 \
 #  CROSS_COMPILE=aarch64-linux-gnu- \
 #  KBUILD_BUILD_USER="builder" \
@@ -83,13 +91,13 @@ rm -rf ${WORKDIR}/output
 rm -rf recovery
 mkdir -p recovery
 
-# kernel image
+# archive kernel image
 xz --format=lzma -k -c arch/arm64/boot/Image >recovery/kernel.lzma
 ls -alh recovery/kernel.lzma
 
-# only-for emmc dtb
-cd recovery
-dd if=/dev/zero of=recovery.img bs=1M count=28
+# generate recovery
+cd ${WORKDIR}/recovery
+dd if=/dev/zero of=recovery.img bs=1M count=27
 mkimage -A arm64 -O linux -T kernel -C lzma \
   -a 0x40080000 -e 0x40080000 \
   -n "Recovery Kernel" \
@@ -104,11 +112,10 @@ cleanup() { mountpoint -q /mnt && umount /mnt || true; }
 trap cleanup EXIT
 
 mount recovery.img /mnt
-df -h
+# only-for emmc dtb
 cp -a ${WORKDIR}/arch/arm64/boot/dts/rockchip/rk3588-bdy-g98-only-emmc.dtb \
   /mnt/rk3588-bdy-g98.dtb
 cp -a kernel-uImage.lzma /mnt
-df -h
 
 tee /mnt/recovery.conf <<'EOF'
 label RK3588 Linux recovery

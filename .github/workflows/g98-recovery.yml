@@ -3,7 +3,7 @@ name: BDY G98 Recovery Build
 on:
   push:
     branches:
-      - kdev-recovery
+      - kdev
   repository_dispatch:
   workflow_dispatch:
 
@@ -64,7 +64,7 @@ jobs:
             curl wget aria2 axel git rsync \
             coreutils util-linux uuid-runtime qemu-user-static binfmt-support \
             fakeroot expect patch patchutils sed tree jq ripgrep binwalk \
-            sudo locales lsb-release ca-certificates gnupg dirmngr
+            sudo locales lsb-release ca-certificates gnupg dirmngr golang-go
           df -Th
 
       - name: Run Recovery Build in Ubuntu 22.04 container
