@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -x
+
+if [ ! -f /usr/local/go/bin/go ]; then
+	wget -c https://go.dev/dl/go1.25.13.linux-amd64.tar.gz
+	sudo tar -C /usr/local -xzf go1.25.13.linux-amd64.tar.gz
+fi
+
+export PATH=/usr/local/go/bin:$PATH
+
+which go
+go version
+
+go mod tidy
+
+CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o rkdev_arm64 .
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o rkdev_amd64 .
+

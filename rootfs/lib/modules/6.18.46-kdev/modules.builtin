@@ -273,6 +273,10 @@ kernel/drivers/leds/trigger/ledtrig-camera.ko
 kernel/drivers/leds/trigger/ledtrig-netdev.ko
 kernel/drivers/leds/trigger/ledtrig-pattern.ko
 kernel/drivers/leds/trigger/ledtrig-tty.ko
+kernel/drivers/pci/controller/pci-host-common.ko
+kernel/drivers/pci/controller/pci-host-generic.ko
+kernel/drivers/pci/controller/pcie-rockchip-host.ko
+kernel/drivers/pci/controller/dwc/pci-meson.ko
 kernel/drivers/video/backlight/backlight.ko
 kernel/drivers/video/backlight/gpio_backlight.ko
 kernel/drivers/video/backlight/pwm_bl.ko
@@ -517,6 +521,7 @@ kernel/drivers/net/mdio/mdio-mux-mmioreg.ko
 kernel/drivers/net/mdio/mdio-mux-multiplexer.ko
 kernel/drivers/net/pcs/pcs_xpcs.ko
 kernel/drivers/net/dsa/yt921x.ko
+kernel/drivers/net/ethernet/realtek/r8125_vendor/r8125.ko
 kernel/drivers/net/ethernet/stmicro/stmmac/stmmac.ko
 kernel/drivers/net/ethernet/stmicro/stmmac/stmmac-platform.ko
 kernel/drivers/net/ethernet/stmicro/stmmac/dwmac-meson.ko

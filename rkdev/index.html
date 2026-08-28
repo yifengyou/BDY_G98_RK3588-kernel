@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKdev - 固件更新 & 终端</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+
+        .navbar { width: 100%; background: #fff; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,.1); display: flex; justify-content: center; align-items: center; gap: 0; margin-bottom: 30px; }
+        .nav-tab { padding: 15px 30px; font-size: 16px; font-weight: bold; color: #5c7ebf; cursor: pointer; border-bottom: 3px solid transparent; transition: all .2s; user-select: none; }
+        .nav-tab:hover { color: #2c5aa0; background: #f8faff; }
+        .nav-tab.active { color: #2c5aa0; border-bottom-color: #2c5aa0; }
+        .nav-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+        .nav-reboot { padding: 8px 18px; color: #d9534f; border: 1px solid #d9534f; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; transition: all .2s; }
+        .nav-reboot:hover { background: #d9534f; color: #fff; }
+        .nav-reboot.disabled { opacity: .5; pointer-events: none; }
+
+        .panel { display: none; width: 90%; max-width: 900px; }
+        .panel.active { display: block; }
+
+        .card { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,.05); text-align: center; }
+        .card h1 { color: #2c5aa0; font-size: 32px; margin-bottom: 25px; }
+        .form-group { margin: 20px 0; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        select, input[type="file"], button { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        button.primary { background: #2c5aa0; color: #fff; border: none; cursor: pointer; }
+        button.primary:disabled { background: #999; cursor: not-allowed; }
+        button.refresh-btn { background: #eef; color: #2c5aa0; border: 1px solid #ccd; cursor: pointer; }
+        #device-select { min-width: 350px; font-family: monospace; font-size: 13px; }
+
+        .progress-container { margin-top: 25px; display: none; text-align: left; }
+        .progress-bar-outer { width: 100%; height: 30px; background: #e0e0e0; border-radius: 15px; overflow: hidden; position: relative; }
+        .progress-bar-inner { height: 100%; background: linear-gradient(90deg, #2c5aa0, #4a90d9); width: 0%; transition: width .3s; border-radius: 15px; }
+        .progress-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 13px; font-weight: bold; color: #333; }
+        .progress-details { margin-top: 10px; font-family: monospace; font-size: 13px; color: #555; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; }
+
+        #result-area { margin-top: 20px; padding: 15px; border-radius: 4px; display: none; text-align: left; white-space: pre-wrap; font-family: monospace; font-size: 13px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+
+        .warning-box { background: #fff9c4; border: 1px solid #ffe082; padding: 20px; border-radius: 4px; text-align: left; margin-top: 30px; }
+        .warning-box ul { padding-left: 20px; color: #555; }
+
+        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 12px; margin-left: 10px; }
+        .status-writing { background: #fff3cd; color: #856404; }
+        .status-syncing { background: #d1ecf1; color: #0c5460; }
+        .status-done { background: #d4edda; color: #155724; }
+        .status-error { background: #f8d7da; color: #721c24; }
+
+        #terminal-container { width: 100%; height: 75vh; background: #1e1e1e; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.15); padding: 4px; cursor: text; }
+
+        /* ===== Terminal Reset Button ===== */
+        .terminal-toolbar { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+        .btn-term-reset {
+            padding: 5px 14px; font-size: 13px; font-weight: bold;
+            color: #d9534f; border: 1px solid #d9534f; border-radius: 4px;
+            background: transparent; cursor: pointer; transition: all .2s; user-select: none;
+        }
+        .btn-term-reset:hover { background: #d9534f; color: #fff; }
+
+        #reboot-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,.92); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top-color: #2c5aa0; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div id="reboot-overlay">
+    <div class="spinner"></div>
+    <h2 style="color:#2c5aa0;">系统正在重启...</h2>
+    <p id="reboot-status" style="color:#666;margin-top:10px;">正在等待设备离线</p>
+</div>
+
+<div class="navbar">
+    <div class="nav-tab active" data-panel="flash-panel" onclick="switchTab(this)">⚡ 固件刷写</div>
+    <div class="nav-tab" data-panel="terminal-panel" onclick="switchTab(this)">💻 终端</div>
+    <div class="nav-actions">
+        <div class="nav-reboot" id="nav-reboot-btn" onclick="triggerReboot(event)">🔄 重启系统</div>
+    </div>
+</div>
+
+<div id="flash-panel" class="panel active">
+    <div class="card">
+        <h1>彼度云G98/Z98固件更新助手</h1>
+        <p>选择目标存储设备 (U盘、SATA盘、M2 NVME盘)，然后选择固件文件进行刷写。</p>
+
+        <div class="form-group">
+            <label for="device-select"><strong>目标设备:</strong></label>
+            <select id="device-select"><option value="">-- 请点击刷新加载设备 --</option></select>
+            <button type="button" class="refresh-btn" onclick="loadDevices()">🔄 刷新</button>
+        </div>
+
+        <form id="upload-form" class="form-group" onsubmit="handleUpload(event)">
+            <input type="file" name="firmware" id="firmware-file" required>
+            <button type="submit" class="primary" id="btn-flash">⚡ 开始刷写</button>
+        </form>
+
+        <div class="progress-container" id="progress-container">
+            <div style="margin-bottom:8px;font-weight:bold;">刷写进度 <span class="status-badge" id="status-badge"></span></div>
+            <div class="progress-bar-outer">
+                <div class="progress-bar-inner" id="progress-bar"></div>
+                <div class="progress-text" id="progress-percent">0%</div>
+            </div>
+            <div class="progress-details">
+                <span id="progress-written">已写入: 0 B</span>
+                <span id="progress-total">总大小: 0 B</span>
+                <span id="progress-speed">速度: -- MB/s</span>
+            </div>
+        </div>
+
+        <div id="result-area"></div>
+
+        <div class="warning-box">
+            <h3>⚠️ 高危操作注意</h3>
+            <ul>
+                <li><strong>过滤规则</strong>：仅显示 U盘、SATA盘、M2 NVME 设备。</li>
+                <li><strong>数据丢失风险</strong>：刷写操作将覆盖目标设备上的所有数据！</li>
+                <li><strong>写入方式</strong>：文件先暂存至 /tmp/，再以 4MB 块逐块写入 (等效 dd bs=4M oflag=sync)。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="terminal-panel" class="panel">
+    <div class="terminal-toolbar">
+        <button type="button" class="btn-term-reset" onclick="resetTerminal()">	✨ 复位终端</button>
+    </div>
+    <div id="terminal-container"></div>
+</div>
+
+<script>
+// ==================== Tab Switching ====================
+let termInstance = null;
+let termFitAddon = null;
+let termWs = null;
+let termInitialized = false;
+
+function switchTab(el) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(el.dataset.panel).classList.add('active');
+
+    if (el.dataset.panel === 'terminal-panel') {
+        if (!termInitialized) {
+            initTerminal();                       // 首次：完整初始化
+        } else {
+            // 非首次：重算尺寸 + 断了就重连
+            setTimeout(() => {
+                if (termFitAddon) termFitAddon.fit();
+                sendResize();
+            }, 50);
+            if (!termWs || termWs.readyState !== WebSocket.OPEN) {
+                reconnectTerminal();
+            }
+        }
+    }
+}
+
+// ==================== Terminal (xterm.js + WebSocket) ====================
+function initTerminal() {
+    termInitialized = true;
+    const container = document.getElementById('terminal-container');
+
+    termInstance = new Terminal({
+        cursorBlink: true,
+        fontSize: 14,
+        fontFamily: '"Cascadia Code", "Fira Code", Menlo, Monaco, monospace',
+        theme: { background: '#1e1e1e', foreground: '#d4d4d4', cursor: '#d4d4d4' },
+        allowProposedApi: true
+    });
+    termFitAddon = new FitAddon.FitAddon();
+    termInstance.loadAddon(termFitAddon);
+    termInstance.open(container);
+    termFitAddon.fit();
+
+    // ✅ 输入监听只绑定一次（避免重连时重复叠加）
+    termInstance.onData((data) => {
+        if (termWs && termWs.readyState === WebSocket.OPEN) {
+            const buf = new Uint8Array(data.length + 1);
+            buf[0] = 0x30; // '0' = data frame
+            new TextEncoder().encodeInto(data, buf.subarray(1));
+            termWs.send(buf);
+        }
+    });
+
+    // ✅ 点击终端区域 → 已断开则重连（让 "Click terminal to reconnect" 真正生效）
+    container.addEventListener('click', () => {
+        if (!termWs || termWs.readyState !== WebSocket.OPEN) {
+            reconnectTerminal();
+        }
+    });
+
+    connectTerminal();
+
+    window.addEventListener('resize', () => {
+        if (termFitAddon && document.getElementById('terminal-panel').classList.contains('active')) {
+            termFitAddon.fit();
+            sendResize();
+        }
+    });
+}
+
+// ✅ 复位终端：清屏 + 断开重连（用于终端错乱/卡死时恢复）
+function resetTerminal() {
+    if (!termInitialized || !termInstance) return;
+    termInstance.clear();
+    termInstance.writeln('\x1b[33m⟳ Terminal reset...\x1b[0m');
+    if (termWs) {
+        try {
+            termWs.onopen = termWs.onmessage = termWs.onclose = termWs.onerror = null;
+            termWs.close();
+        } catch {}
+        termWs = null;
+    }
+    setTimeout(() => reconnectTerminal(), 150);
+}
+
+// ✅ 安全重连
+function reconnectTerminal() {
+    if (termWs) {
+        try {
+            termWs.onopen = termWs.onmessage = termWs.onclose = termWs.onerror = null;
+            termWs.close();
+        } catch {}
+        termWs = null;
+    }
+    if (termInstance) {
+        termInstance.writeln('\r\n\x1b[33m↻ Reconnecting...\x1b[0m');
+    }
+    connectTerminal();
+}
+
+function connectTerminal() {
+    // ✅ 防御：已有可用/正在建立的连接就不重复创建
+    if (termWs && (termWs.readyState === WebSocket.OPEN || termWs.readyState === WebSocket.CONNECTING)) {
+        return;
+    }
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    termWs = new WebSocket(`${proto}//${location.host}/api/terminal`);
+    termWs.binaryType = 'arraybuffer';
+
+    termWs.onopen = () => {
+        termInstance.writeln('\x1b[32m✔ Connected to remote shell\x1b[0m\r\n');
+        sendResize();
+    };
+
+    termWs.onmessage = (e) => {
+        termInstance.write(typeof e.data === 'string' ? e.data : new Uint8Array(e.data));
+    };
+
+    termWs.onclose = () => {
+        termInstance.writeln('\r\n\x1b[31m✘ Connection closed. Click terminal to reconnect.\x1b[0m');
+        termWs = null;   // ✅ 标记断开，便于 switchTab / 点击判断
+    };
+
+    termWs.onerror = () => {};
+}
+
+function sendResize() {
+    if (!termWs || termWs.readyState !== WebSocket.OPEN || !termInstance) return;
+    const buf = new Uint8Array(5);
+    buf[0] = 0x31; // '1' = resize frame
+    const rows = termInstance.rows, cols = termInstance.cols;
+    buf[1] = (rows >> 8) & 0xff; buf[2] = rows & 0xff;
+    buf[3] = (cols >> 8) & 0xff; buf[4] = cols & 0xff;
+    termWs.send(buf);
+}
+
+// ==================== Flash Functions ====================
+let eventSource = null;
+
+async function loadDevices() {
+    const sel = document.getElementById('device-select');
+    sel.innerHTML = '<option value="">加载中...</option>';
+    try {
+        const resp = await fetch('/api/devices');
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+        const devices = await resp.json();
+        sel.innerHTML = '<option value="">-- 请选择目标设备 --</option>';
+        if (!devices?.length) {
+            const o = document.createElement('option');
+            o.text = "未发现符合条件的设备"; o.disabled = true;
+            sel.add(o);
+            showResult("未检测到设备", "error");
+            return;
+        }
+        devices.forEach(d => {
+            const o = document.createElement('option');
+            o.value = d.path;
+            o.text = `${d.type ? '['+d.type+']' : ''} ${d.path} ${d.size ? '('+d.size+')' : ''} ${d.model ? '- '+d.model : ''}`;
+            sel.add(o);
+        });
+        showResult(`已加载 ${devices.length} 个设备`, "success");
+    } catch (e) {
+        sel.innerHTML = '<option value="">加载失败</option>';
+        showResult("加载失败: " + e.message, "error");
+    }
+}
+
+async function handleUpload(e) {
+    e.preventDefault();
+    const dev = document.getElementById('device-select');
+    const file = document.getElementById('firmware-file');
+    if (!dev.value) { showResult("请先选择目标设备！", "error"); return; }
+    if (!file.files.length) { showResult("请先选择固件文件！", "error"); return; }
+
+    const mb = (file.files[0].size / 1048576).toFixed(1);
+    if (!confirm(`⚠️ 确定要将 ${mb} MB 刷写到 ${dev.value}？\n数据将被永久清除！`)) return;
+
+    const fd = new FormData();
+    fd.append('firmware', file.files[0]);
+    fd.append('target_device', dev.value);
+
+    const btn = document.getElementById('btn-flash');
+    btn.disabled = true; btn.textContent = "⏳ 上传中...";
+    showResult("正在上传到 /tmp/ ...", "info");
+    hideProgress();
+
+    try {
+        const resp = await fetch('/upload', { method: 'POST', body: fd });
+        const text = await resp.text();
+        let result;
+        try { result = JSON.parse(text); } catch { showResult(`非JSON响应: ${text.substring(0,300)}`, "error"); resetBtn(); return; }
+        if (!resp.ok) { showResult("❌ " + (result.error || "未知错误"), "error"); resetBtn(); return; }
+        showResult("✅ " + result.message, "info");
+        startProgress(result.task_id);
+    } catch (err) {
+        showResult("网络错误: " + err.message, "error"); resetBtn();
+    }
+}
+
+function startProgress(taskId) {
+    if (eventSource) eventSource.close();
+    showProgress();
+    eventSource = new EventSource(`/api/progress?id=${taskId}`);
+    eventSource.onmessage = (e) => {
+        try {
+            const t = JSON.parse(e.data);
+            updateProgressUI(t);
+            if (t.status === "done") { eventSource.close(); eventSource = null; showResult("✅ 刷写完成！", "success"); resetBtn(); }
+            else if (t.status === "error") { eventSource.close(); eventSource = null; showResult("❌ " + (t.error||"未知错误"), "error"); resetBtn(); }
+        } catch {}
+    };
+    eventSource.onerror = () => { if (eventSource) { eventSource.close(); eventSource = null; } };
+}
+
+function updateProgressUI(t) {
+    const pct = Math.min(t.progress, 100).toFixed(1);
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-percent').textContent = pct + '%';
+    document.getElementById('progress-written').textContent = '已写入: ' + fmtBytes(t.written);
+    document.getElementById('progress-total').textContent = '总大小: ' + fmtBytes(t.total);
+    document.getElementById('progress-speed').textContent = '速度: ' + (t.speed / 1048576).toFixed(1) + ' MB/s';
+    const badge = document.getElementById('status-badge');
+    const map = { writing: ['写入中','status-writing'], syncing: ['同步中','status-syncing'], done: ['完成','status-done'], error: ['错误','status-error'] };
+    const [txt, cls] = map[t.status] || ['',''];
+    badge.textContent = txt; badge.className = 'status-badge ' + cls;
+}
+
+// ==================== Reboot ====================
+async function triggerReboot(e) {
+    e.preventDefault();
+    if (!confirm("⚠️ 确定立即重启？所有未保存操作将丢失！")) return;
+    const overlay = document.getElementById('reboot-overlay');
+    const status = document.getElementById('reboot-status');
+    overlay.style.display = 'flex';
+    document.getElementById('nav-reboot-btn').classList.add('disabled');
+    try { await fetch('/api/reboot', { method: 'POST' }); } catch {}
+    status.textContent = "重启指令已发送，30 秒内不轮询，等待设备离线...";
+    setTimeout(() => { status.textContent = "正在等待系统启动..."; waitForReboot(); }, 30000);
+}
+
+function waitForReboot() {
+    const status = document.getElementById('reboot-status');
+    let n = 0;
+    const iv = setInterval(async () => {
+        n++;
+        status.textContent = `尝试连接... (${n}/60)`;
+        try {
+            const r = await fetch('/api/devices', { cache: 'no-store' });
+            if (r.ok) { clearInterval(iv); status.textContent = "✅ 系统已恢复！即将刷新..."; status.style.color = "#155724"; setTimeout(() => location.reload(), 1500); }
+        } catch {}
+        if (n >= 60) { clearInterval(iv); status.textContent = "⚠️ 等待超时，请手动检查"; status.style.color = "#721c24"; document.getElementById('nav-reboot-btn').classList.remove('disabled'); }
+    }, 2000);
+}
+
+// ==================== Utilities ====================
+function showProgress() { document.getElementById('progress-container').style.display = 'block'; }
+function hideProgress() { document.getElementById('progress-container').style.display = 'none'; }
+function resetBtn() { const b = document.getElementById('btn-flash'); b.disabled = false; b.textContent = "⚡ 开始刷写"; }
+function showResult(msg, type) { const a = document.getElementById('result-area'); a.style.display = 'block'; a.className = type; a.textContent = msg; }
+function fmtBytes(b) {
+    if (!b) return '0 B';
+    const k = 1024, s = ['B','KB','MB','GB','TB'];
+    const i = Math.floor(Math.log(b) / Math.log(k));
+    return (b / Math.pow(k, i)).toFixed(1) + ' ' + s[i];
+}
+
+window.onload = loadDevices;
+</script>
+</body>
+</html>
