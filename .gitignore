@@ -194,3 +194,4 @@ sphinx_*/
 /rootfs/lib/modules/*
 /output
 /rootfs/rkdev_arm64
+/recovery-buildlog.txt

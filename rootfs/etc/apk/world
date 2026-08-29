@@ -8,6 +8,7 @@ busybox
 dhcpcd
 dnsmasq
 dropbear
+e2fsprogs
 ethtool
 gcompat
 htop
@@ -20,3 +21,4 @@ openvswitch
 openvswitch-openrc
 pciutils
 util-linux
+xfsprogs
