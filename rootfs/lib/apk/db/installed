@@ -1082,6 +1082,88 @@ R:dropbear
 a:0:0:755
 Z:Q1Fe3GqspqgAGeS34YxswtfF5PP3Y=
 
+C:Q1xFnL6G5Mg5/8lajRfFAmmKgALEg=
+P:e2fsprogs
+V:1.47.4-r0
+A:aarch64
+S:184461
+I:482946
+T:Standard Ext2/3/4 filesystem utilities
+U:https://e2fsprogs.sourceforge.net/
+L:GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT
+o:e2fsprogs
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1773905192
+c:8683a6972cb245fbbdb535dad6435a9930bb9374
+D:so:libblkid.so.1 so:libc.musl-aarch64.so.1 so:libcom_err.so.2 so:libe2p.so.2 so:libext2fs.so.2 so:libuuid.so.1
+p:cmd:e2fsck=1.47.4-r0 cmd:fsck.ext2=1.47.4-r0 cmd:fsck.ext3=1.47.4-r0 cmd:fsck.ext4=1.47.4-r0 cmd:mke2fs=1.47.4-r0 cmd:mkfs.ext2=1.47.4-r0 cmd:mkfs.ext3=1.47.4-r0 cmd:mkfs.ext4=1.47.4-r0
+F:etc
+R:e2scrub.conf
+Z:Q1qBm/tRM4g/qxmIqtXmRSiMiqaKA=
+R:mke2fs.conf
+Z:Q1QaOwqGIM11+7X52en/ZNXvT7/VI=
+F:sbin
+R:e2fsck
+a:0:0:755
+Z:Q1Ytes+e+0bwQpbqF+BH3HEoXN6DI=
+R:fsck.ext2
+a:0:0:777
+Z:Q1bXmadt0JofL2Bp1AUy18g8gSLck=
+R:fsck.ext3
+a:0:0:777
+Z:Q1bXmadt0JofL2Bp1AUy18g8gSLck=
+R:fsck.ext4
+a:0:0:777
+Z:Q1bXmadt0JofL2Bp1AUy18g8gSLck=
+R:mke2fs
+a:0:0:755
+Z:Q1hFMEpESCEs8yrhXhyFq+cqUW4J0=
+R:mkfs.ext2
+a:0:0:777
+Z:Q1Jpz5y6JISkYohfz5ajLqSTWiBew=
+R:mkfs.ext3
+a:0:0:777
+Z:Q1Jpz5y6JISkYohfz5ajLqSTWiBew=
+R:mkfs.ext4
+a:0:0:777
+Z:Q1Jpz5y6JISkYohfz5ajLqSTWiBew=
+
+C:Q13aRbORYNvPbK6EdK9/4WZ7H53T4=
+P:e2fsprogs-libs
+V:1.47.4-r0
+A:aarch64
+S:216701
+I:599168
+T:Standard Ext2/3/4 filesystem utilities (libraries)
+U:https://e2fsprogs.sourceforge.net/
+L:GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT
+o:e2fsprogs
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1773905192
+c:8683a6972cb245fbbdb535dad6435a9930bb9374
+D:so:libc.musl-aarch64.so.1 so:libcom_err.so.2
+p:so:libe2p.so.2=2.3 so:libext2fs.so.2=2.4 so:libss.so.2=2.0
+F:usr
+F:usr/lib
+R:libe2p.so.2
+a:0:0:777
+Z:Q1PTqgfVr+JorPtAKxQ1qBg8QLaoE=
+R:libe2p.so.2.3
+a:0:0:755
+Z:Q14Q8yL7MFpFRnARESj9/voW9cMp0=
+R:libext2fs.so.2
+a:0:0:777
+Z:Q1m6gKXfJujY/NxFo5X2NsLVIojjM=
+R:libext2fs.so.2.4
+a:0:0:755
+Z:Q11LFOTqWU/xUTVLESSm8socMI8xo=
+R:libss.so.2
+a:0:0:777
+Z:Q1TPlQUDrdVVPASfNAVlSlEoRDNeE=
+R:libss.so.2.0
+a:0:0:755
+Z:Q1aGOAljVVFzdbqyaiqeNItdR13VM=
+
 C:Q1rKgafPFZCYtn6SRy6nRFs7GHr5E=
 P:ethtool
 V:7.0-r0
@@ -1386,6 +1468,27 @@ F:usr/libexec/ifupdown-ng
 R:ethtool
 a:0:0:755
 Z:Q11f4snk37o+F/xx0WsdicjpkRjNw=
+
+C:Q1y0egRdFgJmjOsdfMAcILIvvG9vE=
+P:inih
+V:62-r0
+A:aarch64
+S:4640
+I:67240
+T:Simple .INI file parser for embedded systems
+U:https://github.com/benhoyt/inih
+L:BSD-3-Clause
+o:inih
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1757684124
+c:f62350e037a6e8cc2e4f21bd918862859b6169fd
+D:so:libc.musl-aarch64.so.1
+p:so:libinih.so.0=0
+F:usr
+F:usr/lib
+R:libinih.so.0
+a:0:0:755
+Z:Q1ULKLQkcNtASkRoCCDf5n6SL07Do=
 
 C:Q1aJgo8Ys9WUHBi+RJNNokPd8caUI=
 P:iptables
@@ -2050,6 +2153,30 @@ Z:Q1cWMzBIqDxewWwQDF0HzJuqzKSeY=
 R:libpsx.so.2.78
 a:0:0:755
 Z:Q1/25qWilntrPZWqcl4y/lhAyO284=
+
+C:Q1SFJf5C4Zg5AwT77WolxGkRLj06M=
+P:libcom_err
+V:1.47.4-r0
+A:aarch64
+S:6577
+I:67320
+T:Common error description library
+U:https://e2fsprogs.sourceforge.net/
+L:GPL-2.0-or-later AND LGPL-2.0-or-later AND BSD-3-Clause AND MIT
+o:e2fsprogs
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1773905192
+c:8683a6972cb245fbbdb535dad6435a9930bb9374
+D:so:libc.musl-aarch64.so.1
+p:so:libcom_err.so.2=2.1
+F:usr
+F:usr/lib
+R:libcom_err.so.2
+a:0:0:777
+Z:Q16m4HrGizBiH4lG6Mxd5EL239L2U=
+R:libcom_err.so.2.1
+a:0:0:755
+Z:Q1Rp94FdYdEXVbbgsbFoHJy5ZOuxw=
 
 C:Q1B+W/WsLe+RZ3uvymoYtsJR6A9To=
 P:libcrypto3
@@ -4295,6 +4422,66 @@ R:umount
 a:0:0:4755
 Z:Q1uErPWrXZfgVjWzv5icceDsF4H/Q=
 
+C:Q1JHzS8YAZOx2+SfM6c6phhE1cXQM=
+P:userspace-rcu
+V:0.15.3-r0
+A:aarch64
+S:93887
+I:472736
+T:Userspace RCU (read-copy-update) library
+U:https://liburcu.org/
+L:LGPL-2.1-or-later
+o:userspace-rcu
+m:Patrycja Rosa <alpine@ptrcnull.me>
+t:1760460787
+c:e7494294eddc019bc834a79e1eedeca35de22733
+D:so:libc.musl-aarch64.so.1
+p:so:liburcu-bp.so.8=8.1.0 so:liburcu-cds.so.8=8.1.0 so:liburcu-common.so.8=8.1.0 so:liburcu-mb.so.8=8.1.0 so:liburcu-memb.so.8=8.1.0 so:liburcu-qsbr.so.8=8.1.0 so:liburcu.so.8=8.1.0
+F:usr
+F:usr/lib
+R:liburcu-bp.so.8
+a:0:0:777
+Z:Q16/3GXfyW5/6Vh2g1TBVTmfZlos0=
+R:liburcu-bp.so.8.1.0
+a:0:0:755
+Z:Q1uTLF8aV/rAcIrj6WcBZUB5piteI=
+R:liburcu-cds.so.8
+a:0:0:777
+Z:Q1z4oOGUFYzoF4xlBkPZM/AOawLvE=
+R:liburcu-cds.so.8.1.0
+a:0:0:755
+Z:Q1DcFc+jYfOtSjncjdAW6wqqH3yGM=
+R:liburcu-common.so.8
+a:0:0:777
+Z:Q1aacTh3MgqCgseiWgor+puA2gKro=
+R:liburcu-common.so.8.1.0
+a:0:0:755
+Z:Q1n+Uw0KHRLVP5KtGQz6sytHiDIlY=
+R:liburcu-mb.so.8
+a:0:0:777
+Z:Q1h5VKMvm38U5NhlyCebfB/ryflVY=
+R:liburcu-mb.so.8.1.0
+a:0:0:755
+Z:Q1Azq96vKQGqh2ifr9kguBeRiglU0=
+R:liburcu-memb.so.8
+a:0:0:777
+Z:Q1S1ozBFDBFm5rdmMy6Z+UwYKqI2Q=
+R:liburcu-memb.so.8.1.0
+a:0:0:755
+Z:Q1ZZhnrDTMN1WzSj2eyvgl7D43bmw=
+R:liburcu-qsbr.so.8
+a:0:0:777
+Z:Q1PIneReE/zyH9uX4Gy3zWwbeKsDs=
+R:liburcu-qsbr.so.8.1.0
+a:0:0:755
+Z:Q1PNkFUb5kIzlE5IWZJlM/tA7E2hM=
+R:liburcu.so.8
+a:0:0:777
+Z:Q1NisZeT5AoyG01xX0mm+JEr2v2WY=
+R:liburcu.so.8.1.0
+a:0:0:755
+Z:Q17umfjXSi54XbzDLs3+w8jtPyOKw=
+
 C:Q1frpoLiVEHUYDaowqn3t0dMCCYJ8=
 P:util-linux
 V:2.42.1-r0
@@ -4702,6 +4889,35 @@ F:sbin
 R:wipefs
 a:0:0:755
 Z:Q1osB/Uz2EJXinKaslbZUKnJXvdoY=
+
+C:Q1FejkrMjbVZcQoYp5/RyBzHMDpTE=
+P:xfsprogs
+V:7.0.1-r0
+A:aarch64
+S:584511
+I:1304190
+T:XFS filesystem utilities
+U:https://xfs.org/index.php/Main_Page
+L:LGPL-2.1-or-later
+o:xfsprogs
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1779494477
+c:ea4d2b7001df68844234b3c9480b71906c1fa5b5
+D:so:libblkid.so.1 so:libc.musl-aarch64.so.1 so:libinih.so.0 so:liburcu.so.8 so:libuuid.so.1
+p:cmd:fsck.xfs=7.0.1-r0 cmd:mkfs.xfs=7.0.1-r0 cmd:xfs_repair=7.0.1-r0
+F:sbin
+R:fsck.xfs
+a:0:0:755
+Z:Q1iOlBbFa3n6JAp8sMuGqlBpxGHJw=
+R:mkfs.xfs
+a:0:0:755
+Z:Q1WyFNDHaetp1ekJD2MWie4440xII=
+R:xfs_repair
+a:0:0:755
+Z:Q115ddPUztX8JG5xecYsIAgoANV4E=
+F:var
+F:var/lib
+F:var/lib/xfsprogs
 
 C:Q1qeG8MrsxW/2sYiT5J4Xk2aM0vyk=
 P:zlib
