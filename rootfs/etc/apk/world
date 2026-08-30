@@ -9,6 +9,7 @@ dhcpcd
 dnsmasq
 dropbear
 e2fsprogs
+e2fsprogs-extra
 ethtool
 gcompat
 htop
