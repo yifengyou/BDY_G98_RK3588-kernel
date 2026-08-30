@@ -318,7 +318,7 @@ async function handleUpload(e) {
     fd.append('target_device', dev.value);
 
     const btn = document.getElementById('btn-flash');
-    btn.disabled = true; btn.textContent = "⏳ 上传中...";
+    btn.disabled = true; btn.textContent = "⏳ 执行中...";
     showResult("正在上传到 /tmp/ ...", "info");
     hideProgress();
 
