@@ -995,7 +995,7 @@ config INPUT_STPMIC1_ONKEY
 config INPUT_ADC_KEY_ACTION
 	tristate "ADC key short/long press reboot/poweroff handler"
 	depends on INPUT
-	default y
+	default n
 	help
 	  Registers an input handler that monitors a specific key event.
 	  Short press (< 3s) triggers system reboot.
