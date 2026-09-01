@@ -1,0 +1,183 @@
++ cd /rockchip/BDY_G98_RK3588.git/kernel.git/rkdev
++ ./build.sh
++ '[' '!' -f /usr/local/go/bin/go ']'
++ export PATH=/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
++ PATH=/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
++ which go
+/usr/local/go/bin/go
++ go version
+go version go1.25.13 linux/amd64
++ go mod tidy
++ CGO_ENABLED=0
++ GOOS=linux
++ GOARCH=arm64
++ go build -trimpath '-ldflags=-s -w -extldflags=-static' '-gcflags=all=-l -B' -o rkdev_arm64 .
++ CGO_ENABLED=0
++ GOOS=linux
++ GOARCH=amd64
++ go build -trimpath '-ldflags=-s -w -extldflags=-static' '-gcflags=all=-l -B' -o rkdev_amd64 .
++ ls -al rkdev_amd64 rkdev_arm64
+-rwxr-xr-x 1 root root 7565496 Sep  1 11:03 rkdev_amd64
+-rwxr-xr-x 1 root root 7012536 Sep  1 11:03 rkdev_arm64
++ cp -a rkdev_arm64 /rockchip/BDY_G98_RK3588.git/kernel.git/rootfs/
++ sync
++ cd /rockchip/BDY_G98_RK3588.git/kernel.git/
++ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KBUILD_BUILD_USER=builder KBUILD_BUILD_HOST=kdevbuilder LOCALVERSION=-kdev bdy_g98_rk3588_recovery_defconfig
+#
+# No change to .config
+#
+++ make LOCALVERSION=-kdev kernelrelease
++ KVER=6.18.46-kdev
++ KVER=6.18.46-kdev
++ [[ 6.18.46-kdev != *kdev ]]
++ echo 'KVER: 6.18.46-kdev'
+KVER: 6.18.46-kdev
+++ nproc
++ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KBUILD_BUILD_USER=builder KBUILD_BUILD_HOST=kdevbuilder LOCALVERSION=-kdev dtbs -j32
+++ nproc
++ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KBUILD_BUILD_USER=builder KBUILD_BUILD_HOST=kdevbuilder LOCALVERSION=-kdev KCFLAGS=-Wno-unused-function -j32
+  CALL    scripts/checksyscalls.sh
+  GEN     usr/initramfs_data.cpio
+  GZIP    usr/initramfs_inc_data
+  AS      usr/initramfs_data.o
+  AR      usr/built-in.a
+  AR      built-in.a
+  AR      vmlinux.a
+  LD      vmlinux.o
+  MODPOST Module.symvers
+  UPD     include/generated/utsversion.h
+  CC      init/version-timestamp.o
+  KSYMS   .tmp_vmlinux0.kallsyms.S
+  AS      .tmp_vmlinux0.kallsyms.o
+  LD      .tmp_vmlinux1
+  NM      .tmp_vmlinux1.syms
+  KSYMS   .tmp_vmlinux1.kallsyms.S
+  AS      .tmp_vmlinux1.kallsyms.o
+  LD      .tmp_vmlinux2
+  NM      .tmp_vmlinux2.syms
+  KSYMS   .tmp_vmlinux2.kallsyms.S
+  AS      .tmp_vmlinux2.kallsyms.o
+  LD      vmlinux.unstripped
+  NM      System.map
+  SORTTAB vmlinux.unstripped
+  OBJCOPY vmlinux
+  GEN     modules.builtin.modinfo
+  GEN     modules.builtin
+  OBJCOPY arch/arm64/boot/Image
+  GZIP    arch/arm64/boot/Image.gz
+++ nproc
++ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KBUILD_BUILD_USER=builder KBUILD_BUILD_HOST=kdevbuilder LOCALVERSION=-kdev KCFLAGS=-Wno-unused-function modules -j32
+  CALL    scripts/checksyscalls.sh
+++ pwd
++ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KBUILD_BUILD_USER=builder KBUILD_BUILD_HOST=kdevbuilder LOCALVERSION=-kdev INSTALL_MOD_PATH=/rockchip/BDY_G98_RK3588.git/kernel.git/kos modules_install
+  INSTALL /rockchip/BDY_G98_RK3588.git/kernel.git/kos/lib/modules/6.18.46-kdev/modules.order
+  INSTALL /rockchip/BDY_G98_RK3588.git/kernel.git/kos/lib/modules/6.18.46-kdev/modules.builtin
+  INSTALL /rockchip/BDY_G98_RK3588.git/kernel.git/kos/lib/modules/6.18.46-kdev/modules.builtin.modinfo
+  SYMLINK /rockchip/BDY_G98_RK3588.git/kernel.git/kos/lib/modules/6.18.46-kdev/build
+  DEPMOD  /rockchip/BDY_G98_RK3588.git/kernel.git/kos/lib/modules/6.18.46-kdev
++ rm -rf 'rootfs/var/cache/apk/*'
++ rm -rf rootfs/lib/modules/6.18.45-kdev rootfs/lib/modules/6.18.46-kdev
++ rm -f rootfs/root/.ash_history
++ echo
++ cp -a kos/lib/modules/6.18.45-kdev kos/lib/modules/6.18.46-kdev rootfs/lib/modules/
++ du -sh rootfs
+69M	rootfs
+++ nproc
++ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KBUILD_BUILD_USER=builder KBUILD_BUILD_HOST=kdevbuilder LOCALVERSION=-kdev KCFLAGS=-Wno-unused-function -j32
+  CALL    scripts/checksyscalls.sh
+  GEN     usr/initramfs_data.cpio
+  GZIP    usr/initramfs_inc_data
+  AS      usr/initramfs_data.o
+  AR      usr/built-in.a
+  AR      built-in.a
+  AR      vmlinux.a
+  LD      vmlinux.o
+  MODPOST Module.symvers
+  UPD     include/generated/utsversion.h
+  CC      init/version-timestamp.o
+  KSYMS   .tmp_vmlinux0.kallsyms.S
+  AS      .tmp_vmlinux0.kallsyms.o
+  LD      .tmp_vmlinux1
+  NM      .tmp_vmlinux1.syms
+  KSYMS   .tmp_vmlinux1.kallsyms.S
+  AS      .tmp_vmlinux1.kallsyms.o
+  LD      .tmp_vmlinux2
+  NM      .tmp_vmlinux2.syms
+  KSYMS   .tmp_vmlinux2.kallsyms.S
+  AS      .tmp_vmlinux2.kallsyms.o
+  LD      vmlinux.unstripped
+  NM      System.map
+  SORTTAB vmlinux.unstripped
+  OBJCOPY vmlinux
+  GEN     modules.builtin.modinfo
+  GEN     modules.builtin
+  OBJCOPY arch/arm64/boot/Image
+  GZIP    arch/arm64/boot/Image.gz
++ cat include/config/kernel.release
+6.18.46-kdev
++ ls -alh arch/arm64/boot/Image
+-rw-r--r-- 1 root root 49M Sep  1 11:03 arch/arm64/boot/Image
++ rm -rf /rockchip/BDY_G98_RK3588.git/kernel.git/output
++ rm -rf recovery
++ mkdir -p recovery
++ xz --format=lzma -k -c arch/arm64/boot/Image
++ ls -al recovery/kernel.lzma
+-rw-r--r-- 1 root root 27433796 Sep  1 11:04 recovery/kernel.lzma
++ cd /rockchip/BDY_G98_RK3588.git/kernel.git/recovery
++ dd if=/dev/zero of=recovery.img bs=1M count=27
+27+0 records in
+27+0 records out
+28311552 bytes (28 MB, 27 MiB) copied, 0.00228257 s, 12.4 GB/s
++ mkimage -A arm64 -O linux -T kernel -C lzma -a 0x40080000 -e 0x40080000 -n 'Recovery Kernel' -d kernel.lzma kernel-uImage.lzma
+Image Name:   Recovery Kernel
+Created:      Tue Sep  1 11:04:00 2026
+Image Type:   AArch64 Linux Kernel Image (lzma compressed)
+Data Size:    27433796 Bytes = 26790.82 KiB = 26.16 MiB
+Load Address: 40080000
+Entry Point:  40080000
++ mkfs.ext4 -O '^metadata_csum,^has_journal,^resize_inode' -m 0 -N 16 -L recovery recovery.img
+mke2fs 1.47.0 (5-Feb-2023)
+Discarding device blocks:    0/6912         done                            
+Creating filesystem with 6912 4k blocks and 16 inodes
+
+Allocating group tables: 0/1   done                            
+Writing inode tables: 0/1   done                            
+Writing superblocks and filesystem accounting information: 0/1   done
+
++ trap cleanup EXIT
++ mount recovery.img /mnt
++ rmdir /mnt/lost+found
++ cp -a /rockchip/BDY_G98_RK3588.git/kernel.git/arch/arm64/boot/dts/rockchip/rk3588-bdy-g98-only-emmc.dtb /mnt/rk3588-bdy-g98.dtb
++ cp -a kernel-uImage.lzma /mnt
++ tee /mnt/recovery.conf
+label RK3588 Linux recovery
+    kernel kernel-uImage.lzma
+    fdt rk3588-bdy-g98.dtb
+    append console=ttyS2,1500000n8 earlycon=uart8250,mmio32,0xfeb50000 rootwait rw
++ umount /mnt
++ sync
++ mkdir -p /rockchip/BDY_G98_RK3588.git/kernel.git/output/
++ cp -a recovery.img /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-emmc.img
++ sync
++ mount recovery.img /mnt
++ cp -a /rockchip/BDY_G98_RK3588.git/kernel.git/arch/arm64/boot/dts/rockchip/rk3588-bdy-g98-only-spi.dtb /mnt/rk3588-bdy-g98.dtb
++ sync
++ umount /mnt
++ sync
++ cp -a recovery.img /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-spi.img
++ cp -a /rockchip/BDY_G98_RK3588.git/kernel.git/buildlog-recovery.txt /rockchip/BDY_G98_RK3588.git/kernel.git/output/
++ ls -alh /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-emmc.img /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-spi.img
+-rw-r--r-- 1 root root 27M Sep  1 11:04 /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-emmc.img
+-rw-r--r-- 1 root root 27M Sep  1 11:04 /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-spi.img
++ sha256sum /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-emmc.img /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-spi.img
+762d7649346975bf40adb0d485bdad3f7f59de38e2f4621aace3c9de6b5a50e3  /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-emmc.img
+91e95c798ad69edd4229d6db766d012dcbb3e6f32af0147dae076bc6bc98583d  /rockchip/BDY_G98_RK3588.git/kernel.git/output/recovery-g98_only-spi.img
++ ls -alh /rockchip/BDY_G98_RK3588.git/kernel.git/recovery/kernel.lzma
+-rw-r--r-- 1 root root 27M Sep  1 11:04 /rockchip/BDY_G98_RK3588.git/kernel.git/recovery/kernel.lzma
++ sha256sum /rockchip/BDY_G98_RK3588.git/kernel.git/recovery/kernel.lzma
+fc92fcde81ed9d68bfbbc4c056be7a31cd01512af2e4cbd73146f75ce7c97bc2  /rockchip/BDY_G98_RK3588.git/kernel.git/recovery/kernel.lzma
++ echo 'All done!All ok!'
+All done!All ok!
++ cleanup
++ mountpoint -q /mnt
++ true
