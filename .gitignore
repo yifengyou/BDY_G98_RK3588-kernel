@@ -195,3 +195,4 @@ sphinx_*/
 /output
 /rootfs/rkdev_arm64
 /recovery-buildlog.txt
+buildlog-recovery.txt

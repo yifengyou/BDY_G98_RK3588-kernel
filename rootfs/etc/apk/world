@@ -17,6 +17,7 @@ iptables
 lvm2
 musl-utils
 openrc
+openssh-client
 openssh-client-common
 openssh-server
 openssh-sftp-server
