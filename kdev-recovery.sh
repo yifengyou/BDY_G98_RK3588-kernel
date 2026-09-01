@@ -4,7 +4,7 @@ set -ex
 
 WORKDIR=$(pwd)
 
-LOG_FILE="recovery-buildlog.txt"
+LOG_FILE="buildlog-recovery.txt"
 exec > >(tee -a "$LOG_FILE") 2>&1
 
 # update rkdev
