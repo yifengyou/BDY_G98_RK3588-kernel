@@ -97,7 +97,7 @@ mkdir -p recovery
 
 # archive kernel image
 xz --format=lzma -k -c arch/arm64/boot/Image >recovery/kernel.lzma
-ls -alh recovery/kernel.lzma
+ls -al recovery/kernel.lzma
 
 # generate recovery
 cd ${WORKDIR}/recovery
@@ -106,9 +106,10 @@ mkimage -A arm64 -O linux -T kernel -C lzma \
   -a 0x40080000 -e 0x40080000 \
   -n "Recovery Kernel" \
   -d kernel.lzma kernel-uImage.lzma
+
 mkfs.ext4 \
   -O '^metadata_csum,^has_journal,^resize_inode' \
-  -N 16 -m 0 \
+  -m 0 -N 16 \
   -L recovery \
   recovery.img
 
@@ -116,11 +117,12 @@ cleanup() { mountpoint -q /mnt && umount /mnt || true; }
 trap cleanup EXIT
 
 mount recovery.img /mnt
+rmdir /mnt/lost+found || :
+
 # only-for emmc dtb
 cp -a ${WORKDIR}/arch/arm64/boot/dts/rockchip/rk3588-bdy-g98-only-emmc.dtb \
   /mnt/rk3588-bdy-g98.dtb
 cp -a kernel-uImage.lzma /mnt
-
 tee /mnt/recovery.conf <<'EOF'
 label RK3588 Linux recovery
     kernel kernel-uImage.lzma
