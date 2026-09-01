@@ -132,7 +132,7 @@ EOF
 umount /mnt
 sync
 mkdir -p ${WORKDIR}/output/
-cp -a recovery.img ${WORKDIR}/output/BDY_G98_RECOVERY_ONLY_EMMC.img
+cp -a recovery.img ${WORKDIR}/output/recovery-g98_only-emmc.img
 sync
 
 # add only spi recovery
@@ -142,7 +142,7 @@ cp -a ${WORKDIR}/arch/arm64/boot/dts/rockchip/rk3588-bdy-g98-only-spi.dtb \
 sync
 umount /mnt
 sync
-cp -a recovery.img ${WORKDIR}/output/BDY_G98_RECOVERY_ONLY_SPI.img
+cp -a recovery.img ${WORKDIR}/output/recovery-g98_only-spi.img
 cp -a ${WORKDIR}/${LOG_FILE} ${WORKDIR}/output/
 
 ls -alh ${WORKDIR}/output/*.img
