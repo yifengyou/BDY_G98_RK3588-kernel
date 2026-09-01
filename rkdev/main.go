@@ -1,11 +1,12 @@
 package main
 
 import (
-	_ "embed"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -21,6 +22,9 @@ import (
 
 //go:embed index.html
 var indexHTML string
+
+//go:embed res
+var resFS embed.FS
 
 const uploadDir = "/tmp"
 const blockSize = 4 * 1024 * 1024
@@ -112,6 +116,11 @@ type LsblkDevice struct {
 func main() {
 	tmpl := template.Must(template.New("index").Parse(indexHTML))
 
+	resSubFS, err := fs.Sub(resFS, "res")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { tmpl.Execute(w, nil) })
 	http.HandleFunc("/api/devices", func(w http.ResponseWriter, r *http.Request) { jsonOK(w, getFilteredDevices()) })
 	http.HandleFunc("/upload", handleUpload)
@@ -120,6 +129,7 @@ func main() {
 
 	// ✅ WebSocket 终端端点
 	http.Handle("/api/terminal", websocket.Handler(handleTerminal))
+	http.Handle("/res/", http.StripPrefix("/res/", http.FileServer(http.FS(resSubFS))))
 
 	fmt.Println("========================================")
 	fmt.Println("  RKdev + Terminal port:80 protocol:http")

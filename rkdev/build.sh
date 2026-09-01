@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -ex
 
 if [ ! -f /usr/local/go/bin/go ]; then
 	wget -c https://go.dev/dl/go1.25.13.linux-amd64.tar.gz
@@ -12,6 +12,7 @@ export PATH=/usr/local/go/bin:$PATH
 which go
 go version
 
+rm -f rkdev_amd64 rkdev_arm64
 go mod tidy
 
 CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build \
