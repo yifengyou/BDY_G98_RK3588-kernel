@@ -2338,6 +2338,30 @@ R:libeconf.so.0.8.3
 a:0:0:755
 Z:Q1GUWDK3m1qBOfwXpA0dfWQKzWaTQ=
 
+C:Q15xy7z/gBItTVwWTKbTLivH0/1Z8=
+P:libedit
+V:20260508.3.1-r1
+A:aarch64
+S:78226
+I:198544
+T:BSD line editing library
+U:https://www.thrysoee.dk/editline
+L:BSD-3-Clause
+o:libedit
+m:Achill Gilgenast <achill@achill.org>
+t:1778831809
+c:7c805161e588c028cdee3f19f500849fb2c75d42
+D:so:libc.musl-aarch64.so.1 so:libncursesw.so.6
+p:so:libedit.so.0=0.0.77
+F:usr
+F:usr/lib
+R:libedit.so.0
+a:0:0:777
+Z:Q1BbncYOhfcIavmhljFBcLYMIctl4=
+R:libedit.so.0.0.77
+a:0:0:755
+Z:Q1fJemlRDJcihGwpjfKDBNSZ+TSfc=
+
 C:Q1EDvc3eO5l5OfKgaom/ThzmoDz84=
 P:libfdisk
 V:2.42.1-r0
@@ -3896,6 +3920,59 @@ R:openrc-user
 a:0:0:755
 Z:Q1cedEa8pxl54cmQhIhW3o8TomHD4=
 
+C:Q1r+ZAF8qMCvG1srbpYKoD2uS5k5c=
+P:openssh-client-common
+V:10.3_p1-r1
+A:aarch64
+S:716200
+I:2438683
+T:OpenBSD's SSH client common files
+U:https://www.openssh.com/portable.html
+L:SSH-OpenSSH
+o:openssh
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1788159173
+c:da03ee144d27cece40d2a293c83214592415ae91
+D:libcrypto3>=3.1.0 so:libc.musl-aarch64.so.1 so:libcrypto.so.3 so:libedit.so.0 so:libz.so.1
+p:cmd:findssl.sh=10.3_p1-r1 cmd:scp=10.3_p1-r1 cmd:sftp=10.3_p1-r1 cmd:ssh-add=10.3_p1-r1 cmd:ssh-agent=10.3_p1-r1 cmd:ssh-copy-id=10.3_p1-r1 cmd:ssh-keyscan=10.3_p1-r1 cmd:ssh-pkcs11-helper=10.3_p1-r1
+F:etc
+F:etc/ssh
+R:moduli
+Z:Q1Vzjsl+r/pdk+VLKLhr80pbKwIXY=
+R:ssh_config
+Z:Q13iPA10jcJpLowPdWXJmFwv3xjLw=
+F:etc/ssh/ssh_config.d
+F:usr
+F:usr/bin
+R:findssl.sh
+a:0:0:755
+Z:Q118AJVSk4PVi6+adyZ8y8zWFVB/k=
+R:scp
+a:0:0:755
+Z:Q19DvDINY8BlpJgJu9fkEPiPvn4RU=
+R:sftp
+a:0:0:755
+Z:Q12bRQMsMp5YDC1CHWq7aJxgCAkeE=
+R:ssh-add
+a:0:0:755
+Z:Q14odRCvx+ioO9gAx0BN1NHoM2/hc=
+R:ssh-agent
+a:0:0:755
+Z:Q1nusJJLYBTIvPLW6M8QuZnE2iwvM=
+R:ssh-copy-id
+a:0:0:755
+Z:Q1MBywgMGSjYl9xRA7B8Z5Nq/0sBI=
+R:ssh-keyscan
+a:0:0:755
+Z:Q1ghSTKYmeR+aejNiDTCnZyCNLG98=
+R:ssh-pkcs11-helper
+a:0:0:755
+Z:Q10E4MDEhNiog6v1T2XmxaghZBWUY=
+F:usr/lib
+F:usr/lib/ssh
+F:var
+F:var/empty
+
 C:Q1fJEIAe3/mjQZb5UPckZXS0RVCr8=
 P:openssh-keygen
 V:10.3_p1-r0
@@ -3987,6 +4064,27 @@ F:etc/init.d
 R:sshd
 a:0:0:755
 Z:Q1XHsXd0vE/+UEbS3YdNqIZ0oOkUs=
+
+C:Q1iOt0+FQu7Muo/eMRljnlU8PdgvI=
+P:openssh-sftp-server
+V:10.3_p1-r1
+A:aarch64
+S:61788
+I:198552
+T:ssh sftp server module
+U:https://www.openssh.com/portable.html
+L:SSH-OpenSSH
+o:openssh
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1788159173
+c:da03ee144d27cece40d2a293c83214592415ae91
+D:so:libc.musl-aarch64.so.1
+F:usr
+F:usr/lib
+F:usr/lib/ssh
+R:sftp-server
+a:0:0:755
+Z:Q1U09ovAEojv5V3hWEFa38SZISp6o=
 
 C:Q1gDm2nc2j+TqvC0aGA3XYAggOglY=
 P:openvswitch
