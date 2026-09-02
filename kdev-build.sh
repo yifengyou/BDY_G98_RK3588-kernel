@@ -110,7 +110,7 @@ tee /mnt/recovery.conf << 'EOF'
 label RK3588 Linux recovery
     kernel kernel-uImage.lzma
     fdt rk3588-bdy-g98.dtb
-    append console=ttyS2,1500000n8 earlycon=uart8250,mmio32,0xfeb50000 rootwait rw
+    append console=ttyS2,1500000n8 earlycon=uart8250,mmio32,0xfeb50000 rootwait rw iommu.passthrough=1
 EOF
 
 ls -alh /mnt
