@@ -29,6 +29,16 @@
 #include <linux/etherdevice.h>
 
 #include "tag.h"
+#include "port_fnos.h"
+
+#ifndef dsa_xmit_port_mask
+static inline unsigned long dsa_xmit_port_mask(const struct sk_buff *skb, const struct net_device *dev)
+{
+	struct dsa_port *dp = dsa_user_to_port(dev);
+
+	return BIT(dp->index);
+}
+#endif
 
 #define YT921X_TAG_NAME	"yt921x"
 
@@ -49,32 +59,11 @@
  */
 enum yt921x_tag_code {
 	YT921X_TAG_CODE_FORWARD = 0,
-	YT921X_TAG_CODE_ACL = 0x17,
 	YT921X_TAG_CODE_UNK_UCAST = 0x19,
 	YT921X_TAG_CODE_UNK_MCAST = 0x1a,
 	YT921X_TAG_CODE_PORT_COPY = 0x1b,
 	YT921X_TAG_CODE_FDB_COPY = 0x1c,
 };
-
-/* Open-coded version of dsa_xmit_port_mask() from newer kernels, which is
- * not available in 6.18. Same semantics as tag_ksz.c.
- */
-static unsigned long yt921x_xmit_port_mask(const struct net_device *dev)
-{
-	struct dsa_port *dp = dsa_user_to_port(dev);
-	unsigned long mask = BIT(dp->index);
-
-	if (IS_ENABLED(CONFIG_HSR) &&
-	    unlikely(dev->features & NETIF_F_HW_HSR_DUP)) {
-		struct net_device *hsr_dev = dp->hsr_dev;
-		struct dsa_port *other_dp;
-
-		dsa_hsr_foreach_port(other_dp, dp->ds, hsr_dev)
-			mask |= BIT(other_dp->index);
-	}
-
-	return mask;
-}
 
 static struct sk_buff *
 yt921x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
@@ -93,7 +82,7 @@ yt921x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
 	ctrl = YT921X_TAG_CODE(YT921X_TAG_CODE_FORWARD) | YT921X_TAG_CODE_EN |
 	       YT921X_TAG_PRIO(skb->priority);
 	tag[2] = htons(ctrl);
-	ctrl = YT921X_TAG_TX_PORTS(yt921x_xmit_port_mask(netdev)) |
+	ctrl = YT921X_TAG_TX_PORTS(dsa_xmit_port_mask(skb, netdev)) |
 	       YT921X_TAG_PORT_EN;
 	tag[3] = htons(ctrl);
 
@@ -107,10 +96,8 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
 	__be16 *tag;
 	u16 rx;
 
-	if (unlikely(!pskb_may_pull(skb, YT921X_TAG_LEN))) {
-		kfree_skb(skb);
+	if (unlikely(!pskb_may_pull(skb, YT921X_TAG_LEN)))
 		return NULL;
-	}
 
 	tag = dsa_etype_header_pos_rx(skb);
 
@@ -118,7 +105,6 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
 		dev_warn_ratelimited(&netdev->dev,
 				     "Unexpected EtherType 0x%04x\n",
 				     ntohs(tag[0]));
-		kfree_skb(skb);
 		return NULL;
 	}
 
@@ -127,7 +113,6 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
 	if (unlikely((rx & YT921X_TAG_PORT_EN) == 0)) {
 		dev_warn_ratelimited(&netdev->dev,
 				     "Unexpected rx tag 0x%04x\n", rx);
-		kfree_skb(skb);
 		return NULL;
 	}
 
@@ -136,7 +121,6 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
 	if (unlikely(!skb->dev)) {
 		dev_warn_ratelimited(&netdev->dev,
 				     "Couldn't decode source port %u\n", port);
-		kfree_skb(skb);
 		return NULL;
 	}
 
@@ -155,7 +139,6 @@ yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
 			/* Already forwarded by hardware */
 			dsa_default_offload_fwd_mark(skb);
 			break;
-		case YT921X_TAG_CODE_ACL:
 		case YT921X_TAG_CODE_UNK_UCAST:
 		case YT921X_TAG_CODE_UNK_MCAST:
 			/* NOTE: hardware doesn't distinguish between TRAP (copy

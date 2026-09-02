@@ -1,0 +1,16 @@
+#ifndef __YT921X_PORT_FNOS_H
+#define __YT921X_PORT_FNOS_H
+
+#ifndef DSA_TAG_PROTO_YT921X_VALUE
+#define DSA_TAG_PROTO_YT921X_VALUE      30
+#endif
+
+#ifndef DSA_TAG_PROTO_YT921X
+#define DSA_TAG_PROTO_YT921X      DSA_TAG_PROTO_YT921X_VALUE
+#endif
+
+#ifndef ETH_P_YT921X
+#define ETH_P_YT921X    0x9988
+#endif
+
+#endif  /* __YT921X_PORT_FNOS_H */
