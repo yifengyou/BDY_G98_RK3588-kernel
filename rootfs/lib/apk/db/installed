@@ -1570,6 +1570,57 @@ R:libinih.so.0
 a:0:0:755
 Z:Q1ULKLQkcNtASkRoCCDf5n6SL07Do=
 
+C:Q1OTDDyyRr0+do96XrMfphG7aEYhg=
+P:iperf3
+V:3.20-r0
+A:aarch64
+S:79952
+I:268176
+T:Tool to measure IP bandwidth using UDP or TCP
+U:https://github.com/esnet/iperf
+L:BSD-3-Clause-LBNL
+o:iperf3
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1770327958
+c:957759dac8b33411806c4536b8a4cd1be25543fd
+D:so:libc.musl-aarch64.so.1 so:libcrypto.so.3
+p:cmd:iperf3=3.20-r0 so:libiperf.so.0=0.0.0
+F:usr
+F:usr/bin
+R:iperf3
+a:0:0:755
+Z:Q1IQhV6APWjJleirym+nD8A6b5Aws=
+F:usr/lib
+R:libiperf.so.0
+a:0:0:777
+Z:Q1fUGPZVzG2e9YlVMfjV5Mk9enYfk=
+R:libiperf.so.0.0.0
+a:0:0:755
+Z:Q1Y3PJ/3FawlrTegSUVckJvVy4v5A=
+
+C:Q1zNCr+665ENUYZ/DJqjkqvjQPmFo=
+P:iperf3-openrc
+V:3.20-r0
+A:aarch64
+S:1892
+I:346
+T:Tool to measure IP bandwidth using UDP or TCP (OpenRC init scripts)
+U:https://github.com/esnet/iperf
+L:BSD-3-Clause-LBNL
+o:iperf3
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1770327958
+c:957759dac8b33411806c4536b8a4cd1be25543fd
+i:openrc iperf3=3.20-r0
+F:etc
+F:etc/conf.d
+R:iperf3
+Z:Q1bQ7A0v66qmDSS1WC/FXK4q1Or9U=
+F:etc/init.d
+R:iperf3
+a:0:0:755
+Z:Q1lTmLiJzCnAxKOvPMMQUaXzgWdeY=
+
 C:Q1aJgo8Ys9WUHBi+RJNNokPd8caUI=
 P:iptables
 V:1.8.13-r0
