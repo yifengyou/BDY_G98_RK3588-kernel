@@ -1,13 +1,11 @@
 #!/bin/sh
 
-modprobe r8125
-
-sync
 
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
-iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth2 -j MASQUERADE
-iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth3 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 192.168.98.0/24 -o eth2 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 192.168.98.0/24 -o eth3 -j MASQUERADE
 
 /rkdev_arm64 &
 
+sync
