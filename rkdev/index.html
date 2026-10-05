@@ -961,7 +961,7 @@
         <div class="update-section">
             <div class="update-section-title">🌐 网络更新</div>
             <p style="font-size:13px;color:#666;margin-bottom:12px;">检测 GitHub 仓库是否有新版本，检测到更新后可一键下载并写入 SPI Flash。</p>
-            <div class="update-warning-box">⚠️ <strong>更新写入 SPI Flash 为同步操作，整个过程可能耗时 5-10 分钟。</strong>更新期间请勿关闭浏览器、断开电源或重启设备，否则可能导致设备无法启动。</div>
+            <div class="update-warning-box">⚠️ <strong>更新写入 SPI Flash 为同步操作，整个过程可能耗时 5-10 分钟。</strong>更新期间请勿关闭浏览器、断开电源或重启设备，否则可能导致设备无法启动。更新成功后引导顺序将自动还原为出厂默认值，请更新完成后前往「<strong>引导顺序</strong>」页面检查并按需调整。</div>
             <div class="update-proxy-row">
                 <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#666;white-space:nowrap;cursor:pointer;user-select:none;">
                     <input type="checkbox" id="update-proxy-enable" onchange="onProxyToggle()">
@@ -990,7 +990,7 @@
         <div class="update-section">
             <div class="update-section-title">📤 上传更新</div>
             <p style="font-size:13px;color:#666;margin-bottom:12px;">上传本地 .img 镜像文件来更新刷机助手。</p>
-            <div class="update-warning-box">⚠️ <strong>更新写入 SPI Flash 为同步操作，整个过程可能耗时 5-10 分钟。</strong>更新期间请勿关闭浏览器、断开电源或重启设备，否则可能导致设备无法启动。</div>
+            <div class="update-warning-box">⚠️ <strong>更新写入 SPI Flash 为同步操作，整个过程可能耗时 5-10 分钟。</strong>更新期间请勿关闭浏览器、断开电源或重启设备，否则可能导致设备无法启动。更新成功后引导顺序将自动还原为出厂默认值，请更新完成后前往「<strong>引导顺序</strong>」页面检查并按需调整。</div>
             <div class="update-upload-area" id="update-upload-area" onclick="document.getElementById('update-file-input').click()">
                 <div class="update-upload-icon">📦</div>
                 <div class="update-upload-text">点击选择文件或拖拽文件到此区域</div>
@@ -2962,6 +2962,21 @@
             updateFlashing = false;
             document.getElementById('update-bar-fill').style.width = '100%';
             showUpdateStatus('update-net-status', '✅ ' + data.message, 'success');
+            fetch('/api/uboot_reset', { method: 'POST' })
+                .then(function(r) { return r.json().catch(function() { return {}; }); })
+                .then(function(result) {
+                    if (!result.error) {
+                        appendLog('更新完成，已自动还原出厂环境变量', 'success');
+                        alert('✅ 更新完成！\n\n环境变量已自动还原为出厂默认值。\n\n引导顺序已恢复为默认顺序（USB → eMMC → NVMe → SATA），如需调整请前往「引导顺序」页面按需配置。');
+                    } else {
+                        appendLog('更新完成，但环境变量还原失败: ' + (result.error || '未知错误'), 'warn');
+                        alert('✅ 更新完成！\n\n⚠️ 环境变量自动还原失败，请手动前往「引导顺序」页面点击「恢复出厂变量」。');
+                    }
+                })
+                .catch(function(e) {
+                    appendLog('更新完成，但环境变量还原请求失败: ' + e.message, 'warn');
+                    alert('✅ 更新完成！\n\n⚠️ 环境变量自动还原失败，请手动前往「引导顺序」页面点击「恢复出厂变量」。');
+                });
         } else if (event === 'error') {
             updateFlashing = false;
             document.getElementById('update-progress-bar').classList.remove('visible');
@@ -2998,6 +3013,20 @@
             const data = await resp.json();
             if (resp.ok && data.success) {
                 showUpdateStatus('update-upload-status', '✅ ' + data.message, 'success');
+                try {
+                    var resetResp = await fetch('/api/uboot_reset', { method: 'POST' });
+                    var resetResult = await resetResp.json().catch(() => ({}));
+                    if (resetResp.ok && !resetResult.error) {
+                        appendLog('更新完成，已自动还原出厂环境变量', 'success');
+                        alert('✅ 更新完成！\n\n环境变量已自动还原为出厂默认值。\n\n引导顺序已恢复为默认顺序（USB → eMMC → NVMe → SATA），如需调整请前往「引导顺序」页面按需配置。');
+                    } else {
+                        appendLog('更新完成，但环境变量还原失败: ' + (resetResult.error || '未知错误'), 'warn');
+                        alert('✅ 更新完成！\n\n⚠️ 环境变量自动还原失败，请手动前往「引导顺序」页面点击「恢复出厂变量」。');
+                    }
+                } catch (e) {
+                    appendLog('更新完成，但环境变量还原请求失败: ' + e.message, 'warn');
+                    alert('✅ 更新完成！\n\n⚠️ 环境变量自动还原失败，请手动前往「引导顺序」页面点击「恢复出厂变量」。');
+                }
             } else {
                 showUpdateStatus('update-upload-status', '❌ 更新失败: ' + (data.error || '未知错误'), 'error');
             }
