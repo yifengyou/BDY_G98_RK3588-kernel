@@ -162,6 +162,13 @@
 			linux,default-trigger = "heartbeat";
 		};
 	};
+
+	fan: pwm-fan {
+		compatible = "pwm-fan";
+		pwms = <&pwm9 0 50000 0>;
+		cooling-levels = <0 80 150 200 255>;
+		#cooling-cells = <2>;
+	};
 };
 
 /* ===== CPU Power ===== */
@@ -947,4 +954,142 @@
 
 &rknn_mmu_2 {
 	status = "okay";
+};
+
+/* ===== PWM Fan ===== */
+&pwm9 {
+	pinctrl-0 = <&pwm9m1_pins>;
+	status = "okay";
+};
+
+&package_thermal {
+	trips {
+		fan_start: fan-start {
+			temperature = <42000>;
+			hysteresis = <3000>;
+			type = "active";
+		};
+		fan_low: fan-low {
+			temperature = <45000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+		fan_mid: fan-mid {
+			temperature = <50000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+		fan_high: fan-high {
+			temperature = <60000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+	};
+
+	cooling-maps {
+		fan_map0 {
+			trip = <&fan_start>;
+			cooling-device = <&fan 1 1>;
+		};
+		fan_map1 {
+			trip = <&fan_low>;
+			cooling-device = <&fan 2 2>;
+		};
+		fan_map2 {
+			trip = <&fan_mid>;
+			cooling-device = <&fan 3 3>;
+		};
+		fan_map3 {
+			trip = <&fan_high>;
+			cooling-device = <&fan 4 4>;
+		};
+	};
+};
+
+&gpu_thermal {
+	trips {
+		gpu_fan_start: gpu-fan-start {
+			temperature = <42000>;
+			hysteresis = <3000>;
+			type = "active";
+		};
+		gpu_fan_low: gpu-fan-low {
+			temperature = <45000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+		gpu_fan_mid: gpu-fan-mid {
+			temperature = <50000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+		gpu_fan_high: gpu-fan-high {
+			temperature = <60000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+	};
+
+	cooling-maps {
+		gpu_fan_map0 {
+			trip = <&gpu_fan_start>;
+			cooling-device = <&fan 1 1>;
+		};
+		gpu_fan_map1 {
+			trip = <&gpu_fan_low>;
+			cooling-device = <&fan 2 2>;
+		};
+		gpu_fan_map2 {
+			trip = <&gpu_fan_mid>;
+			cooling-device = <&fan 3 3>;
+		};
+		gpu_fan_map3 {
+			trip = <&gpu_fan_high>;
+			cooling-device = <&fan 4 4>;
+		};
+	};
+};
+
+&npu_thermal {
+	trips {
+		npu_fan_start: npu-fan-start {
+			temperature = <42000>;
+			hysteresis = <3000>;
+			type = "active";
+		};
+		npu_fan_low: npu-fan-low {
+			temperature = <45000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+		npu_fan_mid: npu-fan-mid {
+			temperature = <50000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+		npu_fan_high: npu-fan-high {
+			temperature = <60000>;
+			hysteresis = <2000>;
+			type = "active";
+		};
+	};
+
+	cooling-maps {
+		npu_fan_map0 {
+			trip = <&npu_fan_start>;
+			cooling-device = <&fan 1 1>;
+		};
+		npu_fan_map1 {
+			trip = <&npu_fan_low>;
+			cooling-device = <&fan 2 2>;
+		};
+		npu_fan_map2 {
+			trip = <&npu_fan_mid>;
+			cooling-device = <&fan 3 3>;
+		};
+		npu_fan_map3 {
+			trip = <&npu_fan_high>;
+			cooling-device = <&fan 4 4>;
+		};
+	};
 };
